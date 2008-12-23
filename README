@@ -1,3 +1,7 @@
+To get started, run the updater: 
+
+# script/update
+
 There are 2 sinatra apps: 
 
 1 OAuth server: 
