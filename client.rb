@@ -1,13 +1,13 @@
-require File.dirname(__FILE__) + "/config/rubundler"
-r = Rubundler.new
-r.setup_env
+require 'bundler/setup'
 
 require 'sinatra'
 require 'rest_client'
 require 'oauth'
 require 'oauth/consumer'
 
-use Rack::Session::Cookie
+use Rack::Session::Cookie, :secret => 'foo'
+
+set :port, 4568
 
 before do
   session[:kitchen] ||= {}
@@ -52,7 +52,7 @@ get '/callback' do
 end
 
 get '/stove' do
-  header "Content-Type" => "text/plain"
+  headers "Content-Type" => "text/plain"
   @kitchen.get("/stove").body
 end
 
@@ -116,8 +116,6 @@ class Kitchen
                                       :authorize_path => "/oauth/authorize")
   end
 end
-
-use_in_file_templates!
 
 __END__
 

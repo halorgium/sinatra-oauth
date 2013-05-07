@@ -1,18 +1,24 @@
-To get started, run the updater: 
+# sinatra-oauth
 
-# script/update
+To get started:
 
-There are 2 sinatra apps: 
+    $ gem install bundler
 
-1 OAuth server: 
+Then install dependencies
+
+    $ bundle
+
+There are 2 sinatra apps:
+
+## OAuth server:
 Start this on port 4567
 
-# ruby server.rb
+    $ ruby server.rb
 
-1 OAuth client:
-Start this on port 4568
+## OAuth client:
+Start this on port 4568(done automatically)
 
-# ruby client.rb -p 4568
+    $ ruby client.rb
 
 To bootstrap it all, go to http://localhost:4568/bootstrap, this will automigrate the database.
 Now if you visit http://localhost:4568/, you should be able to try it out.
