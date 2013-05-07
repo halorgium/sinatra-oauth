@@ -1,12 +1,12 @@
-require File.dirname(__FILE__) + "/config/rubundler"
-r = Rubundler.new
-r.setup_env
+require 'bundler/setup'
 
 require 'sinatra'
 require 'oauth'
 require 'oauth/server'
 require 'oauth/signature'
 require 'oauth/request_proxy/rack_request'
+require 'dm-sqlite-adapter'
+require 'dm-migrations'
 
 module OAuth
   class Token
@@ -19,7 +19,7 @@ end
 require 'dm-core'
 require 'dm-validations'
 
-DataMapper.setup(:default, 'sqlite3://sinatra-oauth.sqlite3')
+DataMapper.setup(:default, 'sqlite3:sinatra-oauth.db')
 
 error do
   exception = request.env['sinatra.error']
@@ -79,10 +79,10 @@ class Consumer
   include DataMapper::Resource
 
   property :id, Serial
-  property :name, String, :nullable => false
-  property :callback, String, :nullable => false
-  property :shared, String, :nullable => false
-  property :secret, String, :nullable => false
+  property :name, String, :required => false
+  property :callback, String, :required => false
+  property :shared, String, :required => false
+  property :secret, String, :required => false
 
   has n, :request_tokens
   has n, :access_tokens
@@ -143,10 +143,10 @@ class RequestToken
   include DataMapper::Resource
 
   property :id, Serial
-  property :shared, String, :nullable => false, :unique => true
-  property :secret, String, :nullable => false, :unique => true
+  property :shared, String, :required => false, :unique => true
+  property :secret, String, :required => false, :unique => true
   property :authorized, Boolean
-  property :consumer_id, Integer, :nullable => false
+  property :consumer_id, Integer, :required => false
 
   belongs_to :consumer
   has n, :access_tokens
@@ -174,10 +174,10 @@ class AccessToken
   include DataMapper::Resource
 
   property :id, Serial
-  property :shared, String, :nullable => false, :unique => true
-  property :secret, String, :nullable => false, :unique => true
-  property :consumer_id, Integer, :nullable => false
-  property :request_token_id, Integer, :nullable => false
+  property :shared, String, :required => false, :unique => true
+  property :secret, String, :required => false, :unique => true
+  property :consumer_id, Integer, :required => false
+  property :request_token_id, Integer, :required => false
 
   belongs_to :consumer
   belongs_to :request_token
@@ -189,7 +189,7 @@ class AccessToken
   include TokenMethods
 end
 
-use_in_file_templates!
+DataMapper.finalize
 
 __END__
 
