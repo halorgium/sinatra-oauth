@@ -20,7 +20,7 @@ GEM
       data_objects (= 0.10.12)
     mime-types (1.23)
     oauth (0.4.7)
-    rack (1.5.2)
+    rack (1.6.11)
     rack-protection (1.5.0)
       rack
     rest-client (1.6.7)
